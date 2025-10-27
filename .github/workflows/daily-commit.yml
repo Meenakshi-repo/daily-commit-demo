@@ -2,8 +2,8 @@ name: Daily Commit
 
 on:
   schedule:
-    # Runs daily at 09:15 UTC (adjust hour:minute as needed)
-    - cron: '15 9 * * *'
+    - cron: '15 9 * * *'  # daily at 09:15 UTC
+  workflow_dispatch:      # allows manual triggering
 
 jobs:
   commit:
@@ -20,12 +20,7 @@ jobs:
 
       - name: Make a daily commit
         run: |
-          # Create or update a file
           echo "Daily update $(date)" >> daily.txt
           git add daily.txt
-
-          # Commit only if there are changes
           git diff --cached --quiet || git commit -m "Daily commit from GitHub Action"
-
-          # Push changes
           git push
