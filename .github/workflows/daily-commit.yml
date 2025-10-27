@@ -2,8 +2,8 @@ name: 23f3002817@ds.study.iitm.ac.in
 
 on:
   schedule:
-    - cron: '15 9 * * *'   # daily at 09:15 UTC
-  workflow_dispatch:        # allows manual trigger
+    - cron: '15 9 * * *'
+  workflow_dispatch:
 
 jobs:
   commit:
@@ -20,7 +20,7 @@ jobs:
 
       - name: Make a daily commit
         run: |
-          echo "Daily update $(date)" >> daily.txt
+          echo "Daily update $(date +%s)" >> daily.txt
           git add daily.txt
-          git diff --cached --quiet || git commit -m "Daily commit from GitHub Action"
-          git push
+          git commit -m "Daily commit from GitHub Action" || echo "No changes to commit"
+          git push https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git HEAD:main
